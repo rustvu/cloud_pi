@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>API Call Form</title>
+<script>
+function monteCarloPi(event) {
+
+    // Prevent the form from submitting in the traditional way
+    event.preventDefault();
+    
+    // Get the value of the input field with id="param"
+    let param = document.getElementById("param").value;
+    
+    // Create the request URI for the API call
+    let apiUrl = '/pi/monte_carlo?n=' + encodeURIComponent(param);
+
+    // Perform the API call using the Fetch API
+    fetch(apiUrl)
+        .then(function(response) {
+            // Parse the JSON response
+            return response.json();
+        })
+        .then(function(data) {
+            // Use the JSON data to display the result
+            document.getElementById("result").textContent = data.pi;
+        })
+        .catch(function(error) {
+            // If there is any error you will catch them here
+            document.getElementById("result").textContent = "Error: " + error;
+        });
+}
+</script>
+</head>
+<body>
+
+<h2>Monte-Carlo PI Estimation</h2>
+
+<!-- The form calls the monteCarloPi JavaScript function when submitted -->
+<form onsubmit="return monteCarloPi(event)">
+    <label for="param">Number of random samples (optional):</label>
+    <input type="text" id="param" name="param">
+    <input type="submit" value="Submit">
+</form>
+
+<!-- The result of the API call will be displayed here -->
+<strong>Estimated value of π: <span id="result"></span></strong>
+
+</body>
+</html>
